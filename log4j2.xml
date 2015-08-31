@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="MyApp" packages="">
+	<Appenders>
+		<!-- <RollingFile name="RollingFile" fileName="C:\WORKSPACE\PUSH\messenger\messenger_app.log" 
+			filePattern="C:\WORKSPACE\PUSH\messenger\$${date:yyyy-MM}\messenger_app-%d{MM-dd-yyyy}-%i.log.gz"> 
+			<PatternLayout> <Pattern>%d %p %c{1.} [%t] %m%n</Pattern> </PatternLayout> 
+			<Policies> <TimeBasedTriggeringPolicy /> <SizeBasedTriggeringPolicy size="1 
+			KB" /> </Policies> </RollingFile> -->
+		<Routing name="Routing">
+			<Routes pattern="$${ctx:ROUTINGKEY}">
+
+				<!-- This route is chosen if ThreadContext has value 'special' for key 
+					ROUTINGKEY. -->
+				<Route key="special">
+					<RollingFile name="RollingFile-first"
+						fileName="C:\WORKSPACE\PUSH\messenger\messenger_app.log"
+						filePattern="C:\WORKSPACE\PUSH\messenger\$${date:yyyy-MM}\messenger_app-%d{MM-dd-yyyy}-%i.log.gz">
+						<PatternLayout>
+							<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+						</PatternLayout>
+						<Policies>
+							<TimeBasedTriggeringPolicy />
+							<SizeBasedTriggeringPolicy size="1 KB" />
+						</Policies>
+					</RollingFile>
+				</Route>
+				<Route key="second">
+					<RollingFile name="RollingFile-second"
+						fileName="C:\WORKSPACE\PUSH\messenger\messenger_app_second.log"
+						filePattern="C:\WORKSPACE\PUSH\messenger\$${date:yyyy-MM}\messenger_app_second-%d{MM-dd-yyyy}-%i.log.gz">
+						<PatternLayout>
+							<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+						</PatternLayout>
+						<Policies>
+							<TimeBasedTriggeringPolicy />
+							<SizeBasedTriggeringPolicy size="1 KB" />
+						</Policies>
+					</RollingFile>
+				</Route>
+
+				<!-- This route is chosen if ThreadContext has no value for key ROUTINGKEY. -->
+				<Route key="$${ctx:ROUTINGKEY}">
+					<RollingFile name="Rolling-default" fileName="C:\WORKSPACE\PUSH\messenger\messenger_app_default.log"
+						filePattern="C:\WORKSPACE\PUSH\messenger\$${date:yyyy-MM}\messenger_app_default-%d{MM-dd-yyyy}-%i.log.gz">
+						<PatternLayout>
+							<pattern>%d{ISO8601} [%t] %p %c{3} - %m%n</pattern>
+						</PatternLayout>
+						<Policies>
+							<TimeBasedTriggeringPolicy interval="6"
+								modulate="true" />
+							<SizeBasedTriggeringPolicy size="10 MB" />
+						</Policies>
+					</RollingFile>
+				</Route>
+
+			
+			</Routes>
+		</Routing>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Routing" />
+		</Root>
+	</Loggers>
+</Configuration>
