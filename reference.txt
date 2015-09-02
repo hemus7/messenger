@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/4691132/how-to-run-a-background-task-in-a-servlet-application
+http://stackoverflow.com/questions/4127434/scheduled-task-in-a-web-application
+http://stackoverflow.com/questions/6965296/running-a-java-method-at-a-set-time-each-day
