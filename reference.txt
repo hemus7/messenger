@@ -63,3 +63,51 @@ public class SocketClient {
 
 }
 
+public class SocketClient {
+	public static void main(String[] args) throws JSONException {
+	   
+		SessionRequest sessionRequest=new SessionRequest("IT_TEST_CHANNEL", "SDR_PERSON_ID,1000064319", "");
+		Multimap<String, String> defaultLogMapper=LinkedListMultimap.create();;
+		InteractRequestGenerator intReq = new InteractRequestGenerator(defaultLogMapper);
+		JSONObject jsIntIPObj = intReq.createSessionRequest(sessionRequest);
+		Client client = ClientBuilder.newClient();
+	    WebTarget target = client.target("http://emminteractqa:9080/interact/servlet/RestServlet");
+
+	    try {
+	        //String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	    	
+	    	Response opResp=target.request().post(Entity.json(sessionRequest));
+	        //Response resp=target.request().accept(MediaType.APPLICATION_JSON).post(Entity.json(jsIntIPObj));
+	       // String strSessionData = resp.readEntity(String.class);
+	       // System.out.println("responseMsg: " + strSessionData);
+	    } catch (ProcessingException pe) {
+	    	pe.printStackTrace();
+	    }
+	}
+
+}
+public class SocketClient {
+	public static void main(String[] args) throws JSONException {
+	   
+		SessionRequest sessionRequest=new SessionRequest("IT_TEST_CHANNEL", "SDR_PERSON_ID,1000064319", "");
+		Multimap<String, String> defaultLogMapper=LinkedListMultimap.create();;
+		InteractRequestGenerator intReq = new InteractRequestGenerator(defaultLogMapper);
+		JSONObject jsIntIPObj = intReq.createSessionRequest(sessionRequest);
+		Client client = ClientBuilder.newClient();
+	    WebTarget target = client.target("http://emminteractqa:9080/interact/servlet/RestServlet");
+
+	    try {
+	        //String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	    	
+	    	Response opResp=target.request().post(Entity.json(sessionRequest));
+	        //Response resp=target.request().accept(MediaType.APPLICATION_JSON).post(Entity.json(jsIntIPObj));
+	       // String strSessionData = resp.readEntity(String.class);
+	       // System.out.println("responseMsg: " + strSessionData);
+	    } catch (ProcessingException pe) {
+	    	pe.printStackTrace();
+	    }
+	}
+
+}
+
+
