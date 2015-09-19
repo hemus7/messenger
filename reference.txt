@@ -3,6 +3,7 @@ http://stackoverflow.com/questions/4127434/scheduled-task-in-a-web-application
 http://stackoverflow.com/questions/6965296/running-a-java-method-at-a-set-time-each-day
 http://stackoverflow.com/questions/9028984/how-do-you-connect-an-eclipse-to-a-websphere-application-server-hosted-on-remote
 http://wso2.com/library/225/
+http://stackoverflow.com/questions/27188753/retrieve-jsonobject-in-post-with-jersey
 
 
 yeah that is what I am seeing
