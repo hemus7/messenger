@@ -6,14 +6,6 @@ http://wso2.com/library/225/
 http://stackoverflow.com/questions/27188753/retrieve-jsonobject-in-post-with-jersey
 
 
-yeah that is what I am seeing
-	we may need to declare the future elsewhere
-	include it in our timedcall
-	so rather than submitting callable to timedCall
-	we submit a Future object
-	which is declared in the impl classes
-	and on timeout
-	catch exception
 	
 	package org.koushik.javabrains.messenger.socket;
 
