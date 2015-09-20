@@ -1,0 +1,103 @@
+package org.koushik.javabrains.messenger.socket;
+
+import java.net.URI;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientProperties;
+import org.glassfish.jersey.client.ClientResponse;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.json.JSONObject;
+import org.koushik.javabrains.messenger.model.Comment;
+import org.koushik.javabrains.messenger.model.Message;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public class SocketClient {
+
+	public static void main(String[] args) {
+	   Client client = ClientBuilder.newClient();//.register(GsonMessageBodyHandler.class);
+	    client.property(ClientProperties.CONNECT_TIMEOUT, 10000);
+	    client.property(ClientProperties.READ_TIMEOUT,10000);
+	    
+	    /*ClientConfig clientConfig = new ClientConfig();                          // jersey specific
+	    clientConfig.connectorProvider(new ApacheConnectorProvider());           // jersey specific
+	    RequestConfig reqConfig = RequestConfig.custom()                         // apache HttpClient specific
+	                                           .setConnectTimeout(2000)
+	                                           .setSocketTimeout(2000)
+	                                           .setConnectionRequestTimeout(200)
+	                                           .build();
+	    clientConfig.property(ApacheClientProperties.REQUEST_CONFIG, reqConfig); // jersey specific
+	    Client client = ClientBuilder.newClient(clientConfig);*/
+
+	    GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+	    WebTarget target = client.target("http://localhost:8080/messenger/webapi/messages");
+
+	    try {
+	        String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	        //JsonObject obj;
+	        Map<Long,Comment> comments=new HashMap<>();
+	        Map<Long,Comment> comments1=new HashMap<>();
+	        Comment com1=new Comment(1L, "Test comment", new Date(), "hemu");
+			Comment com2=new Comment(2L, "Test comment", new Date(), "ammu");
+			Comment com3=new Comment(3L, "Test comment", new Date(), "jo");
+			comments.put(1L, com1);
+			comments.put(2L, com2);
+			comments.put(3L, com3);
+	        Message objMsg=new Message(1L, "socket",new Date(), "hke", (HashMap<Long, Comment>) comments);
+	        Message objMsg1=new Message(1L, "Message Tom",new Date(), "Tom", (HashMap<Long, Comment>) comments1);
+	        
+	        JSONObject obj=new JSONObject();
+	        obj.put("author", "Tom");
+	        obj.put("created","2015-07-19T10:11:02.907");
+	        obj.put("message", "Message Tom");
+	        
+	        Response resp=target.request().post(Entity.json(obj));
+	        String postResponse=resp.readEntity(String.class);
+	        
+	        Response response = target.request().accept(MediaType.APPLICATION_JSON).post(Entity.entity(obj.toString(), MediaType.APPLICATION_JSON), Response.class);
+	        Map<String,NewCookie> awsCookie=response.getCookies();
+	        String cookieValue="";
+	        if(awsCookie.containsKey("AWSELB")){
+	        cookieValue=awsCookie.get("AWSELB").getValue();	
+	        }
+	        String postResponse2=response.readEntity(String.class);
+/*	        ClientResponse cResp=response.readEntity(ClientResponse.class);
+	        Scanner sc = new Scanner(cResp.getEntityStream());
+			String strSessionData = sc.useDelimiter("\\Z").next();
+			sc.close();*/
+		//	JSONObject opObj = new JSONObject(strSessionData);
+	        
+	        System.out.println("responseMsg: " + responseMsg);
+	        System.out.println("POST resp::"+postResponse);
+	        System.out.println("TEST JSON:"+obj);
+	        System.out.println("JSON to string"+obj.toString());
+	        System.out.println("POST resp2::"+postResponse2);
+	        System.out.println("Cookie:"+cookieValue);
+	        //System.out.println("strSessionData::"+strSessionData);
+	        resp.close();
+	    } catch (ProcessingException pe) {
+	    	System.out.println("Timout!!!");
+	    	pe.printStackTrace();
+	    }
+	    finally{	    	
+	    	client.close();
+	    }
+	}
+
+}
