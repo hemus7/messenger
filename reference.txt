@@ -8,101 +8,16 @@ http://blog.javabenchmark.org/2013/04/web-services-performance-testing-with.html
 http://www.javarants.com/2008/12/27/using-jax-rs-with-protocol-buffers-for-high-performance-rest-apis/
 
 
-	
-	package org.koushik.javabrains.messenger.socket;
-
-import java.net.SocketTimeoutException;
-
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.http.client.config.RequestConfig;
-import org.glassfish.jersey.apache.connector.ApacheClientProperties;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.message.internal.MediaTypes;
-
-public class SocketClient {
-	public static void main(String[] args) {
-	   // Client client = ClientBuilder.newClient();
-
-/*	    client.property(ClientProperties.CONNECT_TIMEOUT, 1);
-	    client.property(ClientProperties.READ_TIMEOUT,    1);*/
-	    
+	public Client getClient() {		    
 	    ClientConfig clientConfig = new ClientConfig();                          // jersey specific
-	    clientConfig.connectorProvider(new ApacheConnectorProvider());           // jersey specific
-	    RequestConfig reqConfig = RequestConfig.custom()                         // apache HttpClient specific
-	                                           .setConnectTimeout(2000)
-	                                           .setSocketTimeout(2000)
-	                                           .setConnectionRequestTimeout(200)
-	                                           .build();
-	    clientConfig.property(ApacheClientProperties.REQUEST_CONFIG, reqConfig); // jersey specific
+	    clientConfig.property(ClientProperties.READ_TIMEOUT, 2000);
+	    clientConfig.property(ClientProperties.CONNECT_TIMEOUT, 500);
+	    PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+	    connectionManager.setMaxTotal(100);
+	    connectionManager.setDefaultMaxPerRoute(20);
+	    clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
+	    clientConfig.connectorProvider(new ApacheConnectorProvider());
 	    Client client = ClientBuilder.newClient(clientConfig);
-
-	    WebTarget target = client.target("http://localhost:8080/messenger/webapi/messages/1/comments");
-
-	    try {
-	        String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-	        System.out.println("responseMsg: " + responseMsg);
-	    } catch (ProcessingException pe) {
-	    	System.out.println("Timout!!!");
-	    }
-	    /*catch (SocketTimeoutException se) {
-	    	System.out.println("Timout!!!");
-	    }*/
-	}
-
-}
-
-public class SocketClient {
-	public static void main(String[] args) throws JSONException {
-	   
-		SessionRequest sessionRequest=new SessionRequest("IT_TEST_CHANNEL", "SDR_PERSON_ID,1000064319", "");
-		Multimap<String, String> defaultLogMapper=LinkedListMultimap.create();;
-		InteractRequestGenerator intReq = new InteractRequestGenerator(defaultLogMapper);
-		JSONObject jsIntIPObj = intReq.createSessionRequest(sessionRequest);
-		Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://emminteractqa:9080/interact/servlet/RestServlet");
-
-	    try {
-	        //String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-	    	
-	    	Response opResp=target.request().post(Entity.json(sessionRequest));
-	        //Response resp=target.request().accept(MediaType.APPLICATION_JSON).post(Entity.json(jsIntIPObj));
-	       // String strSessionData = resp.readEntity(String.class);
-	       // System.out.println("responseMsg: " + strSessionData);
-	    } catch (ProcessingException pe) {
-	    	pe.printStackTrace();
-	    }
-	}
-
-}
-public class SocketClient {
-	public static void main(String[] args) throws JSONException {
-	   
-		SessionRequest sessionRequest=new SessionRequest("IT_TEST_CHANNEL", "SDR_PERSON_ID,1000064319", "");
-		Multimap<String, String> defaultLogMapper=LinkedListMultimap.create();;
-		InteractRequestGenerator intReq = new InteractRequestGenerator(defaultLogMapper);
-		JSONObject jsIntIPObj = intReq.createSessionRequest(sessionRequest);
-		Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://emminteractqa:9080/interact/servlet/RestServlet");
-
-	    try {
-	        //String responseMsg = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
-	    	
-	    	Response opResp=target.request().post(Entity.json(sessionRequest));
-	        //Response resp=target.request().accept(MediaType.APPLICATION_JSON).post(Entity.json(jsIntIPObj));
-	       // String strSessionData = resp.readEntity(String.class);
-	       // System.out.println("responseMsg: " + strSessionData);
-	    } catch (ProcessingException pe) {
-	    	pe.printStackTrace();
-	    }
-	}
-
-}
-
+	    return client;
+	  }
 
