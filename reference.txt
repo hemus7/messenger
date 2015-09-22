@@ -4,6 +4,7 @@ http://stackoverflow.com/questions/6965296/running-a-java-method-at-a-set-time-e
 http://stackoverflow.com/questions/9028984/how-do-you-connect-an-eclipse-to-a-websphere-application-server-hosted-on-remote
 http://wso2.com/library/225/
 http://stackoverflow.com/questions/27188753/retrieve-jsonobject-in-post-with-jersey
+http://blog.javabenchmark.org/2013/04/web-services-performance-testing-with.html
 
 
 	
