@@ -1,0 +1,39 @@
+Reference application server working internal:
+http://techblog.netflix.com/2015/07/tuning-tomcat-for-high-throughput-fail.html 
+Reference AWS infrastructure:
+https://aws.amazon.com/ec2/instance-types/ 
+https://aws.amazon.com/ec2/virtualcores/ 
+http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=1010184 
+RT : Interact runtime
+GWS : Gateway service
+rps : requests per second
+
+Gateway AWS EC2 instance:
+2 X c4.xlarge
+C4.xlarge = 4 vCPU X 2 virtual core
+Total computing power for Gateway EC2 instance = 2 X 4 X 2
+16 threads at a time
+The minimum amount of Interact RT response time recorded = 40 ms
+Maximum number of requests a single Gateway thread can process in a second (rps) = 25 (i.e.1000/40)
+Considering at least 10 threads available out of 16 threads (2 or more definitely for the OS and similar number for the application server on each AWS instance), the maximum possible number of requests per second is 25 X 10 which is 250 rps
+The load tests done were for 100 users and then 500 users. We have seen very good results from the first test with 100 users which recorded a response time of less than 70 ms
+By the increase in load, the application server acceptor threads accept the connection and keep a queue for worker thread to use when it is available. 
+Assume we get 10 requests together and we have 10 threads ready to work. The time taken for each request is hence 40 ms
+Next, 20 requests are made together. The first 10 will be returned in 40 ms and the next 10 in total of 80 ms.  The average response time hence has now increased to 60. This will keep increasing if the queue size increases. If we have total 30 requests made, first 10 will be returned in 40 ms, next 10 in 80 ms and the last 10 in 120 ms. Average becomes 80 ms. This explains why the service slows down on higher loads.
+The next question, why is it then the Interact RT is running fast. From the metrics taken the RT internal processing time can be anywhere between 0 to 40 ms, but for the Gateway it cannot be anywhere less than 40 ms. (40 ms is the minimum response time recorded from RT)
+Assume the processing time of RT = 10 ms
+Maximum number of requests a RT thread can process in a second (rps) = 100 (i.e.1000/10)
+Considering 10 threads available out of 16, the maximum possible number of requests per second for RT is 100 X 10 which is 1000 rps
+Assume we get 10 requests together and we have 10 threads ready to work. The time taken for each request is hence 10 ms
+Next 20 requests are made together. The first 10 will be returned in 10 ms and the next 10 in total of 20 ms.  The average response time hence has now increased to only 15 ms. This waiting time for queue and the average response time will keep increasing when the load increases. If we have total 30 requests made, first 10 will be returned in 10 ms, next 10 in 20 ms and the last 10 in 30 ms. Average becomes only 20 ms. 
+These figures are for representational purpose only and will also depend on other factors. The OS and the Application server may bring the working and waiting threads back and forth and hence reducing the queue time but not the processing time for one request.
+The actual processing time of RT is not measured and as observed with the throughput it could be in the range of 10-20 ms.  The rest of the 40 ms RT response time is the queue time added up
+The reason for the higher response time for the higher load on the Gateway is due to the minimum processing time of 40 ms restriction. On this hardware the performance is as expected and the result metrics are matching.
+There are no assumptions made and is open for discussion before reaching a conclusion 
+
+
+
+
+
+
+
