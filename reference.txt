@@ -21,3 +21,18 @@ http://www.javarants.com/2008/12/27/using-jax-rs-with-protocol-buffers-for-high-
 	    return client;
 	  }
 
+-----BEGIN LICENSE----- 
+Product: Sourcetrail 
+Licensed to: Hemanth Keloth Erakkodan 
+License type: Test License (unlimited seats) 
+Valid until: 2017-Sep-11 
+- 
+$9$AQAKHTmcldL/z5/wCcbEcRWdgIBpLPbvwE6ShcdaOgu35tV57sv6 
+GjchlMwQXJ4XJ9BQjmoSEv+yroBo6vOcwJnWvceNOI9aEr7/vhyYW41 
+x3AdmsAlGuxd07pI+EPKrWqt8sO/NwLybdzS9NssQC1hQiXEXodP6zf 
+xyvFrmvVCXrYAkg+Dv8b5CXS3qYLZ9lrNLmM7cBBKeDGRSZYXmeL8/+ 
+MVHOp9OJWh67jwcWldp8cK3IfmPJiQyfys1PtIjOTmDwuO6CAjabzbP 
+N9e3uJAgLmyv9FRDzhCzrklv8ZAbOPBtguXAFrQBDVExRSOQPTkD2Tu 
+ua6eBDRJitHM/beUPoQiboIKgukAJfFK9jmitdL0LpsfTrTzJQyYJvQ 
+aHlnKwExsd3g== 
+-----END LICENSE-----
