@@ -36,3 +36,26 @@ N9e3uJAgLmyv9FRDzhCzrklv8ZAbOPBtguXAFrQBDVExRSOQPTkD2Tu
 ua6eBDRJitHM/beUPoQiboIKgukAJfFK9jmitdL0LpsfTrTzJQyYJvQ 
 aHlnKwExsd3g== 
 -----END LICENSE-----
+
+
+IBM MQ upgrade
+Ref: https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_8.0.0/com.ibm.mq.dev.doc/q030530_.htm
+Requirement:
+New applications should use the IBM MQ classes for JMS.
+Features that have recently been added to IBM MQ, such as asynchronous consume and automatic reconnection, are not available in the IBM MQ classes for Java, but are available in the IBM MQ classes for JMS
+Advantages:
+https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_8.0.0/com.ibm.mq.dev.doc/q123770_.htm#q123770_dita
+Get Jar from https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q128170_.htm
+Download all jar client from
+https://www-945.ibm.com/support/fixcentral/swg/downloadFixes?parent=ibm%2FWebSphere&product=ibm/WebSphere/WebSphere+MQ&release=All&platform=All&function=fixId&fixids=8.0.0.7-WS-MQ-Install-Java-All&includeRequisites=1&includeSupersedes=0&downloadMethod=http
+JMS samples
+C:\Program Files\IBM\WebSphere MQ\Tools\jms\samples
+WMQ samples
+C:\Program Files\IBM\WebSphere MQ\Tools\wmqjava\samples
+
+Testing WMQ samples:
+https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.explorer.doc/bi00239_.htm
+For creating channels refer
+https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.explorer.doc/bi00239_.htm
+
+
